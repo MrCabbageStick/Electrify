@@ -15,6 +15,7 @@ public class Electrify implements ModInitializer {
 		ElectrifyBlocks.registerBlocks();
 		ElectrifyItems.registerItems();
 		ElectrifyItemGroups.registerItemGroups();
+		ElectrifyBlockEntities.registerElectrifyBlockEntities();
 	}
 
 	public static Identifier createIdentifier(String path){

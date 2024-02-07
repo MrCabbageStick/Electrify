@@ -18,7 +18,7 @@ public class ElectrifyItemGroups {
                 .displayName(Text.translatable("itemGroup.electrify.main_item_group"))
                 .icon(() -> new ItemStack(Items.COBWEB))
                 .entries((displayContext, entries) -> {
-                    entries.add(ElectrifyItems.TEST_BLOCK_ITEM);
+                    entries.add(ElectrifyItems.ROLLER_INSULATOR);
                 })
                 .build()
         );

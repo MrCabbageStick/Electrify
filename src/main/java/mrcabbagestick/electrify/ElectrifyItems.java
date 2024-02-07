@@ -9,7 +9,7 @@ import net.minecraft.registry.Registry;
 
 public class ElectrifyItems {
 
-    public static final Item TEST_BLOCK_ITEM = registerBlockItem(ElectrifyBlocks.TEST_BLOCK, "test_block");
+    public static final Item ROLLER_INSULATOR = registerBlockItem(ElectrifyBlocks.ROLLER_INSULATOR, "roller_insulator");
     public static Item registerItem(Item item, String name){
         return Registry.register(Registries.ITEM, Electrify.createIdentifier(name), item);
     }
