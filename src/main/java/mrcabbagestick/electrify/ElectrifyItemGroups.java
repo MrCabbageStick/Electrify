@@ -20,6 +20,7 @@ public class ElectrifyItemGroups {
                 .entries((displayContext, entries) -> {
                     entries.add(ElectrifyItems.ROLLER_INSULATOR);
                     entries.add(ElectrifyItems.LARGE_INSULATOR);
+                    entries.add(ElectrifyItems.STEEL_WIRE);
                 })
                 .build()
         );

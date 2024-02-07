@@ -2,5 +2,7 @@
   "itemGroup.electrify.main_item_group": "Electrify",
 
   "block.electrify.roller_insulator": "Roller Insulator",
-  "block.electrify.large_insulator": "Large Insulator"
+  "block.electrify.large_insulator": "Large Insulator",
+
+  "item.electrify.steel_wire": "Steel Wire"
 }
