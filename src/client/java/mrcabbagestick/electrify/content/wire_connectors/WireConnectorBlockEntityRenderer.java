@@ -2,8 +2,6 @@ package mrcabbagestick.electrify.content.wire_connectors;
 
 import mrcabbagestick.electrify.ElectrifyBlockTags;
 import mrcabbagestick.electrify.content.ElectrifyRenderTypes;
-import mrcabbagestick.electrify.content.insulators.roller_insulator.RollerInsulator;
-import mrcabbagestick.electrify.content.insulators.roller_insulator.RollerInsulatorBlockEntity;
 import mrcabbagestick.electrify.content.wires.WireTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -35,8 +33,8 @@ public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity
                 Vector3f offset = ((WireConnectorBase)state.getBlock()).getConnectorOffset(state);
 
                 return new Vector3f(pos.getX(), pos.getY(), pos.getZ())
-                        .sub(entityPos.getX(), entityPos.getY(), entityPos.getZ())
-                        .add(offset);
+                        .add(offset)
+                        .sub(entityPos.getX(), entityPos.getY(), entityPos.getZ());
             }
 
             return null;
@@ -61,7 +59,8 @@ public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity
 
             if(endPos == null) continue;
 
-            Vector3f startPos = RollerInsulator.CONNECTION_OFFSET_MAP.get(entity.getCachedState().get(RollerInsulator.FACING));
+            Vector3f startPos = ((WireConnectorBase)MinecraftClient.getInstance().world.getBlockState(entity.getPos()).getBlock()).getConnectorOffset(entity.getCachedState());
+
             renderWire(startPos, endPos, WireTypes.STEEL_WIRE, positionMatrix, buffer, light, overlay);
         }
 
