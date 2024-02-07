@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "facing=north": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_horizontal"},
+    "facing=east": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_horizontal", "y":  90},
+    "facing=south": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_horizontal", "y":  180},
+    "facing=west": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_horizontal", "y":  270},
+
+    "facing=down": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_vertical"},
+    "facing=up": {"model":  "electrify:block/insulator/roller_insulator/roller_insulator_vertical", "x":  180}
+  }
+}
