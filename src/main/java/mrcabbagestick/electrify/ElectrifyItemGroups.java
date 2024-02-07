@@ -19,6 +19,7 @@ public class ElectrifyItemGroups {
                 .icon(() -> new ItemStack(Items.COBWEB))
                 .entries((displayContext, entries) -> {
                     entries.add(ElectrifyItems.ROLLER_INSULATOR);
+                    entries.add(ElectrifyItems.LARGE_INSULATOR);
                 })
                 .build()
         );

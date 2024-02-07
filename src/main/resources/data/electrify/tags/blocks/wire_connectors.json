@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "electrify:roller_insulator"
+    "electrify:roller_insulator",
+    "electrify:large_insulator"
   ]
 }

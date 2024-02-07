@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "facing=north": {"model":  "electrify:block/insulator/large_insulator", "x":  90, "y":  180},
+    "facing=east": {"model":  "electrify:block/insulator/large_insulator", "x":  90, "y":  270},
+    "facing=south": {"model":  "electrify:block/insulator/large_insulator", "x":  90},
+    "facing=west": {"model":  "electrify:block/insulator/large_insulator", "x":  90, "y":  90},
+
+    "facing=down": {"model":  "electrify:block/insulator/large_insulator"},
+    "facing=up": {"model":  "electrify:block/insulator/large_insulator", "x":  180}
+  }
+}
