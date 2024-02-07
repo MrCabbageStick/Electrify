@@ -3,6 +3,7 @@ package mrcabbagestick.electrify.content.wire_connectors;
 import mrcabbagestick.electrify.ElectrifyBlockTags;
 import mrcabbagestick.electrify.content.ElectrifyRenderTypes;
 import mrcabbagestick.electrify.content.wires.WireTypes;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
@@ -55,11 +56,18 @@ public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity
         Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
         VertexConsumer buffer = vertexConsumers.getBuffer(ElectrifyRenderTypes.WIRE);
 
+        BlockState startBlock = MinecraftClient.getInstance().world.getBlockState(entity.getPos());
+
+        if(!startBlock.isIn(ElectrifyBlockTags.WIRE_CONNECTORS)) {
+            matrices.pop();
+            return;
+        }
+
+        Vector3f startPos = ((WireConnectorBase) startBlock.getBlock()).getConnectorOffset(entity.getCachedState());
+
         for(Vector3f endPos : connectedToOffset){
 
             if(endPos == null) continue;
-
-            Vector3f startPos = ((WireConnectorBase)MinecraftClient.getInstance().world.getBlockState(entity.getPos()).getBlock()).getConnectorOffset(entity.getCachedState());
 
             renderWire(startPos, endPos, WireTypes.STEEL_WIRE, positionMatrix, buffer, light, overlay);
         }

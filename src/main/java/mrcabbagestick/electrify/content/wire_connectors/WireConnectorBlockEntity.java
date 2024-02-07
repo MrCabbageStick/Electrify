@@ -1,6 +1,7 @@
 package mrcabbagestick.electrify.content.wire_connectors;
 
 import mrcabbagestick.electrify.ElectrifyBlockEntities;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -95,5 +96,10 @@ public abstract class WireConnectorBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    public void connectTo(BlockPos pos){
+        connectedTo.add(pos);
+        world.updateListeners(getPos(), getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
     }
 }
