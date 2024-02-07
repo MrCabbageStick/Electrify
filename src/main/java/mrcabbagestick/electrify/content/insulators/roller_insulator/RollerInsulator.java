@@ -1,17 +1,11 @@
-package mrcabbagestick.electrify.content.insulators;
+package mrcabbagestick.electrify.content.insulators.roller_insulator;
 
-import com.google.common.collect.ImmutableMap;
+import mrcabbagestick.electrify.content.wire_connectors.FacingWireConnector;
 import mrcabbagestick.electrify.tools.RotationDegrees;
 import mrcabbagestick.electrify.tools.VoxelShapeTools;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -22,30 +16,15 @@ import org.joml.Vector3f;
 
 import java.util.Map;
 
-public class RollerInsulator extends Block implements BlockEntityProvider, IWireConnector {
-
+public class RollerInsulator extends FacingWireConnector {
     public static final Map<Direction, VoxelShape> SHAPE_MAP;
     public static final Map<Direction, Vector3f> CONNECTION_OFFSET_MAP;
     private static final VoxelShape BASE_VERTICAL_SHAPE;
     private static final VoxelShape BASE_HORIZONTAL_SHAPE;
-    public static final DirectionProperty FACING = Properties.FACING;
 
     public RollerInsulator(Settings settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(FACING, Direction.DOWN));
     }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(FACING, ctx.getSide().getOpposite());
-    }
-
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPE_MAP.get(state.get(FACING));

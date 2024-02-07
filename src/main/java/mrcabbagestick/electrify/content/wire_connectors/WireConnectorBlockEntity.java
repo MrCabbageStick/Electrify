@@ -1,10 +1,9 @@
-package mrcabbagestick.electrify.content.insulators;
+package mrcabbagestick.electrify.content.wire_connectors;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import mrcabbagestick.electrify.Electrify;
 import mrcabbagestick.electrify.ElectrifyBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -13,21 +12,16 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class RollerInsulatorBlockEntity extends BlockEntity {
+public abstract class WireConnectorBlockEntity extends BlockEntity {
 
     public ArrayList<BlockPos> connectedFrom = new ArrayList<>();
     public ArrayList<BlockPos> connectedTo = new ArrayList<>();
 
-//    public ArrayList<Vector3f> connectedFromOffset = new ArrayList<>();
-//    public ArrayList<Vector3f> connectedToOffset = new ArrayList<>();
-
-    public RollerInsulatorBlockEntity(BlockPos pos, BlockState state) {
-        super(ElectrifyBlockEntities.ROLLER_INSULATOR_BLOCK_ENTITY, pos, state);
+    public WireConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
 
@@ -42,9 +36,9 @@ public class RollerInsulatorBlockEntity extends BlockEntity {
             NbtCompound compound = (NbtCompound) entry;
 
             output.add(new BlockPos(
-                compound.getInt("x"),
-                compound.getInt("y"),
-                compound.getInt("z")
+                    compound.getInt("x"),
+                    compound.getInt("y"),
+                    compound.getInt("z")
             ));
         }
 
@@ -103,4 +97,3 @@ public class RollerInsulatorBlockEntity extends BlockEntity {
         return BlockEntityUpdateS2CPacket.create(this);
     }
 }
-

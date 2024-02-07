@@ -1,9 +1,9 @@
-package mrcabbagestick.electrify.content.insulators;
+package mrcabbagestick.electrify.content.wire_connectors;
 
-import mrcabbagestick.electrify.Electrify;
 import mrcabbagestick.electrify.ElectrifyBlockTags;
-import mrcabbagestick.electrify.ElectrifyBlocks;
 import mrcabbagestick.electrify.content.ElectrifyRenderTypes;
+import mrcabbagestick.electrify.content.insulators.roller_insulator.RollerInsulator;
+import mrcabbagestick.electrify.content.insulators.roller_insulator.RollerInsulatorBlockEntity;
 import mrcabbagestick.electrify.content.wires.WireTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -11,23 +11,19 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import org.apache.http.impl.conn.Wire;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 
-public class RollerInsulatorBlockEntityRenderer implements BlockEntityRenderer<RollerInsulatorBlockEntity> {
+public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity> implements BlockEntityRenderer<W> {
 
     private ArrayList<Vector3f> connectedToOffset = new ArrayList<>();
 
-    public RollerInsulatorBlockEntityRenderer(BlockEntityRendererFactory.Context ctx){}
+    public WireConnectorBlockEntityRenderer(BlockEntityRendererFactory.Context ctx){}
 
 
     private ArrayList<Vector3f> blockPosListToOffsetList(ArrayList<BlockPos> blockPoses, BlockPos entityPos){
@@ -36,23 +32,23 @@ public class RollerInsulatorBlockEntityRenderer implements BlockEntityRenderer<R
             BlockState state = MinecraftClient.getInstance().world.getBlockState(pos);
 
             if(state != null && state.isIn(ElectrifyBlockTags.WIRE_CONNECTORS)){
-                Vector3f offset = ((IWireConnector)state.getBlock()).getConnectorOffset(state);
+                Vector3f offset = ((WireConnectorBase)state.getBlock()).getConnectorOffset(state);
 
                 return new Vector3f(pos.getX(), pos.getY(), pos.getZ())
-                        .add(offset)
-                        .sub(entityPos.getX(), entityPos.getY(), entityPos.getZ());
+                        .sub(entityPos.getX(), entityPos.getY(), entityPos.getZ())
+                        .add(offset);
             }
 
             return null;
 
         }).toList());
     }
-    public void updateOffsets(RollerInsulatorBlockEntity entity){
+    public void updateOffsets(W entity){
         connectedToOffset = blockPosListToOffsetList(entity.connectedTo, entity.getPos());
     }
 
     @Override
-    public void render(RollerInsulatorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(W entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         matrices.push();
 
@@ -129,4 +125,5 @@ public class RollerInsulatorBlockEntityRenderer implements BlockEntityRenderer<R
         buffer.vertex(positionMatrix, to.x + widthOffset, to.y, to.z - widthOffset).color(color).light(light).next();
         buffer.vertex(positionMatrix, to.x - widthOffset, to.y, to.z + widthOffset).color(color).light(light).next();
     }
+
 }

@@ -1,6 +1,6 @@
 package mrcabbagestick.electrify;
 
-import mrcabbagestick.electrify.content.insulators.RollerInsulatorBlockEntity;
+import mrcabbagestick.electrify.content.insulators.roller_insulator.RollerInsulatorBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
