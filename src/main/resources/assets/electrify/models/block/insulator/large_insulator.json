@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "electrify:block/insulator/insulator_body",
-		"2": "electrify:block/insulator/insulator_metal_parts"
+		"2": "electrify:block/insulator/insulator_metal_parts",
+		"particle": "#1"
 	},
 	"elements": [
 		{
