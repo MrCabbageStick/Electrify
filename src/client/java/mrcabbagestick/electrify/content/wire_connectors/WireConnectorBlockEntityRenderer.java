@@ -1,7 +1,7 @@
 package mrcabbagestick.electrify.content.wire_connectors;
 
 import mrcabbagestick.electrify.ElectrifyBlockTags;
-import mrcabbagestick.electrify.content.ElectrifyRenderTypes;
+import mrcabbagestick.electrify.ElectrifyRenderTypes;
 import mrcabbagestick.electrify.content.wires.WireTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;

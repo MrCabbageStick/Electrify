@@ -1,4 +1,4 @@
-package mrcabbagestick.electrify.content;
+package mrcabbagestick.electrify;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
