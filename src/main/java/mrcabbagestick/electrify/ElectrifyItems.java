@@ -1,6 +1,6 @@
 package mrcabbagestick.electrify;
 
-import mrcabbagestick.electrify.content.wires.SteelWire;
+import mrcabbagestick.electrify.content.wires.SteelWireItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
@@ -12,7 +12,7 @@ public class ElectrifyItems {
 
     public static final Item ROLLER_INSULATOR = registerBlockItem(ElectrifyBlocks.ROLLER_INSULATOR, "roller_insulator");
     public static final Item LARGE_INSULATOR = registerBlockItem(ElectrifyBlocks.LARGE_INSULATOR, "large_insulator");
-    public static final Item STEEL_WIRE = registerItem(new SteelWire(new FabricItemSettings()), "steel_wire");
+    public static final Item STEEL_WIRE = registerItem(new SteelWireItem(new FabricItemSettings()), "steel_wire");
 
     public static Item registerItem(Item item, String name){
         return Registry.register(Registries.ITEM, Electrify.createIdentifier(name), item);

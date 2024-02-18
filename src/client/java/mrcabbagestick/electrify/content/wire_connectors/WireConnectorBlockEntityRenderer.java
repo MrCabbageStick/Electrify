@@ -3,7 +3,6 @@ package mrcabbagestick.electrify.content.wire_connectors;
 import mrcabbagestick.electrify.ElectrifyBlockTags;
 import mrcabbagestick.electrify.content.ElectrifyRenderTypes;
 import mrcabbagestick.electrify.content.wires.WireTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
@@ -30,8 +29,8 @@ public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity
 
             BlockState state = MinecraftClient.getInstance().world.getBlockState(pos);
 
-            if(state != null && state.isIn(ElectrifyBlockTags.WIRE_CONNECTORS)){
-                Vector3f offset = ((WireConnectorBase)state.getBlock()).getConnectorOffset(state);
+            if(state != null && state.getBlock() instanceof  WireConnectorBaseBlock){
+                Vector3f offset = ((WireConnectorBaseBlock)state.getBlock()).getConnectorOffset(state);
 
                 return new Vector3f(pos.getX(), pos.getY(), pos.getZ())
                         .add(offset)
@@ -63,7 +62,7 @@ public class WireConnectorBlockEntityRenderer<W extends WireConnectorBlockEntity
             return;
         }
 
-        Vector3f startPos = ((WireConnectorBase) startBlock.getBlock()).getConnectorOffset(entity.getCachedState());
+        Vector3f startPos = ((WireConnectorBaseBlock) startBlock.getBlock()).getConnectorOffset(entity.getCachedState());
 
         for(Vector3f endPos : connectedToOffset){
 

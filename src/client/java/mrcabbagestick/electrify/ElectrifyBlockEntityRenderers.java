@@ -1,7 +1,7 @@
 package mrcabbagestick.electrify;
 
-import mrcabbagestick.electrify.content.insulators.renderers.LargeInsulatorBlockEntityRenderer;
-import mrcabbagestick.electrify.content.insulators.renderers.RollerInsulatorBlockEntityRenderer;
+import mrcabbagestick.electrify.content.wire_connectors.insulators.large_insulator.LargeInsulatorBlockEntityRenderer;
+import mrcabbagestick.electrify.content.wire_connectors.insulators.roller_insulator.RollerInsulatorBlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class ElectrifyBlockEntityRenderers {
