@@ -1,6 +1,8 @@
 package mrcabbagestick.electrify.content.wire_connectors;
 
+import mrcabbagestick.electrify.Electrify;
 import mrcabbagestick.electrify.ElectrifyBlockEntities;
+import mrcabbagestick.electrify.tools.NbtTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -25,64 +27,22 @@ public abstract class WireConnectorBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
-
-    private ArrayList<BlockPos> nbtCompoundListToVectorList(NbtList nbtList){
-        if(nbtList.isEmpty()) return new ArrayList<>();
-
-        ArrayList<BlockPos> output = new ArrayList<>();
-
-        for(NbtElement entry : nbtList){
-            if(entry.getType() != NbtElement.COMPOUND_TYPE) continue;
-
-            NbtCompound compound = (NbtCompound) entry;
-
-            output.add(new BlockPos(
-                    compound.getInt("x"),
-                    compound.getInt("y"),
-                    compound.getInt("z")
-            ));
-        }
-
-        return output;
-    }
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
-//        Electrify.LOGGER.info("Executed: read");
         NbtList connectedFromList = nbt.getList("connectedFrom", NbtElement.COMPOUND_TYPE);
         NbtList connectedToList = nbt.getList("connectedTo", NbtElement.COMPOUND_TYPE);
 
-        connectedFrom = nbtCompoundListToVectorList(connectedFromList);
-        connectedTo = nbtCompoundListToVectorList(connectedToList);
-
-//        Electrify.LOGGER.info("Connected to: " + connectedTo.toString());
-//        Electrify.LOGGER.info("Connected from: " + connectedFrom.toString());
-    }
-
-    private NbtList vectorListToNbtCompoundList(ArrayList<BlockPos> vectorList){
-        NbtList output = new NbtList();
-
-        vectorList.stream().map(pos -> {
-            NbtCompound compound = new NbtCompound();
-            compound.putInt("x", pos.getX());
-            compound.putInt("y", pos.getY());
-            compound.putInt("z", pos.getZ());
-            return compound;
-        }).forEach(output::add);
-
-        return output;
+        connectedFrom = NbtTools.toBlockPosList(connectedFromList);
+        connectedTo = NbtTools.toBlockPosList(connectedToList);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
 
-//        Electrify.LOGGER.info("Executed: write");
-//        if(!connectedTo.isEmpty())
-        nbt.put("connectedTo", vectorListToNbtCompoundList(connectedTo));
-
-//        if(!connectedFrom.isEmpty())
-        nbt.put("connectedFrom", vectorListToNbtCompoundList(connectedFrom));
+        nbt.put("connectedTo", NbtTools.from(connectedTo));
+        nbt.put("connectedFrom", NbtTools.from(connectedFrom));
 
         super.writeNbt(nbt);
     }
@@ -98,8 +58,9 @@ public abstract class WireConnectorBlockEntity extends BlockEntity {
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    public void connectTo(BlockPos pos){
+    public void connectTo(BlockPos pos, BlockState state){
         connectedTo.add(pos);
-        world.updateListeners(getPos(), getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
+        markDirty();
+        world.updateListeners(getPos(), state, state, Block.NOTIFY_LISTENERS);
     }
 }

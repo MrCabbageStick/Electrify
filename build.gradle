@@ -47,6 +47,9 @@ dependencies {
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+
+	// For some reosen Intellij does not import this
+	modImplementation "net.minecraft:minecraft-clientOnly-51c0cfe141:1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2"
 }
 
 processResources {
