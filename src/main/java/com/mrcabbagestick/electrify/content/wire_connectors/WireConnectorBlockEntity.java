@@ -127,4 +127,5 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 
 		}
 	}
+
 }

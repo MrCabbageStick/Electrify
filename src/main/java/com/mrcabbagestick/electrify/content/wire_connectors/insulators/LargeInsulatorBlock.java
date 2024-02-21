@@ -1,28 +1,25 @@
 package com.mrcabbagestick.electrify.content.wire_connectors.insulators;
 
-import com.google.common.collect.ImmutableMap;
-import com.mrcabbagestick.electrify.tools.RotationDegrees;
-import com.mrcabbagestick.electrify.tools.VoxelShapeTools;
+import java.util.Map;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import com.mrcabbagestick.electrify.entries.ElectrifyBlockEntities;
 
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import org.joml.Vector3f;
 
 import com.mrcabbagestick.electrify.content.wire_connectors.FacingWireConnectorBlockBase;
 import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorBlockEntity;
-import com.mrcabbagestick.electrify.entries.ElectrifyBlockEntities;
+import com.mrcabbagestick.electrify.tools.RotationDegrees;
+import com.mrcabbagestick.electrify.tools.VoxelShapeTools;
 
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Map;
-import java.util.function.Function;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class LargeInsulatorBlock extends FacingWireConnectorBlockBase<WireConnectorBlockEntity> {
 
@@ -40,6 +37,11 @@ public class LargeInsulatorBlock extends FacingWireConnectorBlockBase<WireConnec
 	}
 
 	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return SHAPE_MAP.get(state.getValue(FACING));
+	}
+
+	@Override
 	public Class<WireConnectorBlockEntity> getBlockEntityClass() {
 		return WireConnectorBlockEntity.class;
 	}
@@ -47,11 +49,6 @@ public class LargeInsulatorBlock extends FacingWireConnectorBlockBase<WireConnec
 	@Override
 	public BlockEntityType<? extends WireConnectorBlockEntity> getBlockEntityType() {
 		return ElectrifyBlockEntities.WIRE_CONNECTOR_BLOCK_ENTITY.get();
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return SHAPE_MAP.get(state.getValue(FACING));
 	}
 
 	static{

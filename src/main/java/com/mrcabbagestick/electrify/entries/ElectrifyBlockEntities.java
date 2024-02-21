@@ -2,10 +2,17 @@ package com.mrcabbagestick.electrify.entries;
 
 import static com.mrcabbagestick.electrify.Electrify.REGISTRATE;
 
+import com.mrcabbagestick.electrify.content.generators.small_dynamo.SmallDynamoBlockEntity;
+import com.mrcabbagestick.electrify.content.generators.small_dynamo.SmallDynamoRenderer;
 import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorBlockEntity;
 import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorRenderer;
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 
+import net.minecraft.client.renderer.blockentity.BeaconRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class ElectrifyBlockEntities {
@@ -19,5 +26,13 @@ public class ElectrifyBlockEntities {
 			.renderer(() -> WireConnectorRenderer::new)
 			.register();
 
-	public static void register(){}
+	public static final RegistryEntry<BlockEntityType<SmallDynamoBlockEntity>> SMALL_DYNAMO_BLOCK_ENTITY = REGISTRATE
+			.blockEntity("small_dynamo_block_entity", SmallDynamoBlockEntity::new)
+			.instance(() -> HalfShaftInstance::new)
+			.validBlocks(ElectrifyBlocks.SMALL_DYNAMO_BLOCK)
+			.renderer(() -> SmallDynamoRenderer::new)
+			.register();
+
+	public static void register(){
+	}
 }
