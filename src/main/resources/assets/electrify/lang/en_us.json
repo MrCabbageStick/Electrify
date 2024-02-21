@@ -3,6 +3,7 @@
 
   "block.electrify.roller_insulator": "Roller Insulator",
   "block.electrify.large_insulator": "Large Insulator",
+  "block.electrify.small_dynamo": "Small Dynamo",
 
   "item.electrify.steel_wire": "Steel Wire"
 }

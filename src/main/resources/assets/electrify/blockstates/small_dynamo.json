@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "facing=up": {"model":  "electrify:block/small_dynamo/block_vertical"},
+    "facing=down": {"model":  "electrify:block/small_dynamo/block_vertical", "x":  180},
+
+    "facing=north": {"model":  "electrify:block/small_dynamo/block", "y": 180},
+    "facing=east": {"model":  "electrify:block/small_dynamo/block", "y": 270},
+    "facing=south": {"model":  "electrify:block/small_dynamo/block"},
+    "facing=west": {"model":  "electrify:block/small_dynamo/block", "y": 90}
+  }
+}
