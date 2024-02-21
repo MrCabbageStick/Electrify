@@ -16,6 +16,12 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	maven { url "https://maven.shedaniel.me/" } // REI
+	maven { url "https://maven.blamejared.com/" } // JEI
+	maven { url "https://maven.theillusivec4.top/" } // Curios
+	maven { url "https://squiddev.cc/maven/" } // CC-Tweaked
+	maven { url 'https://maven.parchmentmc.org' } // Parchment
+	maven { url 'https://maven.tterrag.com/' } // Flywheel Create
 }
 
 loom {
@@ -38,6 +44,11 @@ dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+//	mappings(loom.layered {
+//		it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+//		it.officialMojangMappings { nameSyntheticMembers = false }
+//	})
+
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
@@ -48,8 +59,19 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	// For some reosen Intellij does not import this
+	// For some reason Intellij does not import this
 	modImplementation "net.minecraft:minecraft-clientOnly-51c0cfe141:1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2"
+
+	// Create stuff
+	modImplementation "com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim"
+	modImplementation "com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}"
+	modImplementation "com.tterrag.registrate:Registrate:${registrate_version}"
+
+	// CC-Tweaked
+//	modCompileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-fabric-api:${cctVersion}"
+//	modRuntimeOnly "cc.tweaked:cc-tweaked-${minecraft_version}-fabric:${cctVersion}"
+
+	// Curios
 }
 
 processResources {
