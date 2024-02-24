@@ -40,7 +40,7 @@ public class WireConnectorRenderer<C extends WireConnectorBlockEntity> extends S
 	public void renderSafe(C blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
 
-		Electrify.LOGGER.info("Rendering");
+//		Electrify.LOGGER.info("Rendering");
 
 		Matrix4f positionMatrix = poseStack.last().pose();
 		VertexConsumer _buffer = buffer.getBuffer(ElectrifyRenderTypes.WIRE);

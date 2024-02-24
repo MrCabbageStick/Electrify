@@ -75,7 +75,7 @@ public class WireItemBase extends Item {
 
 	private boolean finishWire(ItemStack usedItem, Player player, BlockPos clickedPos, Level world, WireConnectorBlockEntity target, WireConnectorBlockEntity clicked){
 
-		if(!target.connectTo(clickedPos))
+		if(!target.connectTo(clicked))
 			return false;
 
 		clicked.connectionFrom(target.getBlockPos());

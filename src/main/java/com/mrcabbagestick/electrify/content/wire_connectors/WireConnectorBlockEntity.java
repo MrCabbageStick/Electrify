@@ -1,47 +1,49 @@
 package com.mrcabbagestick.electrify.content.wire_connectors;
 
-import com.mojang.datafixers.types.templates.CompoundList;
-
+import com.mrcabbagestick.electrify.content.network.Network;
 import com.mrcabbagestick.electrify.tools.NbtTools;
 
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
-import net.fabricmc.fabric.mixin.attachment.BlockEntityUpdateS2CPacketMixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class WireConnectorBlockEntity extends SmartBlockEntity {
 
 	public Set<BlockPos> connectedFrom = new HashSet<>();
 	public Set<BlockPos> connectedTo = new HashSet<>();
 	public Set<Vector3f> renderTo = new HashSet<>();
+	public UUID networkNodeUuid = null;
+	public Network network;
+	private boolean isNetworkController;
 
 	public WireConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
+
+		network = new Network();
+		network.addNode(this);
+		isNetworkController = true;
 	}
 
 	@Override
 	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 	}
 
 	@Override
@@ -55,11 +57,11 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		connectedFrom = NbtTools.toBlockPosSet(connectedFromList);
 		connectedTo = NbtTools.toBlockPosSet(connectedToList);
 		renderTo = NbtTools.toFloatVectorSet(renderToList);
-	}
 
-	@Override
-	public void writeSafe(CompoundTag nbt) {
-		super.writeSafe(nbt);
+		String networkNodeUuidString = nbt.getString("networkNodeUUID");
+		networkNodeUuid = networkNodeUuidString.isEmpty() ? null : UUID.fromString(networkNodeUuidString);
+
+		isNetworkController = nbt.getBoolean("isNetworkController");
 	}
 
 	@Override
@@ -69,6 +71,15 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		nbt.put("connectedTo", NbtTools.from(connectedTo));
 		nbt.put("connectedFrom", NbtTools.from(connectedFrom));
 		nbt.put("renderTo", NbtTools.fromVectorSet(renderTo));
+
+		if(networkNodeUuid != null){
+			nbt.putString("networkNodeUUID", networkNodeUuid.toString());
+		}
+
+		nbt.putBoolean("isNetworkController", isNetworkController);
+		if(isNetworkController){
+			nbt.put("Network", network.asCompoundTag());
+		}
 	}
 
 	@Override
@@ -76,7 +87,7 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 
 		for(BlockPos from : connectedFrom){
 			if(level.getBlockEntity(from) instanceof WireConnectorBlockEntity fromConnector) {
-				fromConnector.connectedTo.remove(from);
+				fromConnector.connectedTo.remove(getBlockPos());
 				fromConnector.updateRenderPositions();
 				fromConnector.setChanged();
 			}
@@ -101,10 +112,18 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		return false;
 	}
 
-	public boolean connectTo(BlockPos targetPos){
+	public boolean connectTo(WireConnectorBlockEntity target){
+		BlockPos targetPos = target.getBlockPos();
+
 		if(targetPos.distSqr(getBlockPos()) != 0 && !connectedFrom.contains(targetPos) && connectedTo.add(targetPos)){
+
 			setChanged();
 			updateRenderPositions();
+
+			this.network.mergeWith(target.network);
+			target.isNetworkController = false;
+			target.network = this.network;
+
 			return true;
 		}
 
