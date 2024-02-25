@@ -1,5 +1,6 @@
 package com.mrcabbagestick.electrify.content.network;
 
+import com.mrcabbagestick.electrify.Electrify;
 import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorBlockEntity;
 
 import net.minecraft.nbt.CompoundTag;
@@ -25,6 +26,8 @@ public class Network {
 	private float lastConsumed = 0;
 	private float lastGenerated = 0;
 
+	private CompoundTag unprocessedNetworkNBT = null;
+
 	public Network() {
 	}
 
@@ -40,10 +43,7 @@ public class Network {
 		if(!allNodeEntities.add(connectorEntity))
 			return false;
 
-		UUID uuid = UUID.randomUUID();
-		connectorEntity.networkNodeUuid = uuid;
-
-		allNodes.put(uuid, new NetworkNode(connectorEntity, NetworkNode.NodeType.IDLE));
+		allNodes.put(connectorEntity.networkNodeUuid, new NetworkNode(connectorEntity, NetworkNode.NodeType.IDLE));
 		return true;
 	}
 
@@ -98,10 +98,26 @@ public class Network {
 		return nbt;
 	}
 
+	public boolean hasUnprocessedNbt(){ return unprocessedNetworkNBT != null; }
+	public static Network processNetworkNbt(Network network, Level level){
+		if(!network.hasUnprocessedNbt())
+			return network;
+
+		return fromCompoundTag(network.unprocessedNetworkNBT, level);
+	}
 	public static Network fromCompoundTag(CompoundTag nbt, Level level){
 		Network network = new Network();
 
+		if(level == null){
+			Electrify.LOGGER.info("Skipping tag Reading");
+			network.unprocessedNetworkNBT = nbt;
+			return network;
+		}
+
+		Electrify.LOGGER.info("Not skipping tag reading");
+
 		Tag nodes = nbt.get("nodes");
+		Electrify.LOGGER.warn("Nodes in nbt " + nodes.toString());
 		if(nodes.getType() == ListTag.TYPE){
 			for(Tag _tag : ((ListTag) nodes)){
 				if(_tag.getType() != CompoundTag.TYPE) continue;
@@ -109,6 +125,7 @@ public class Network {
 				CompoundTag tag = (CompoundTag) _tag;
 
 				String uuidString = tag.getString("uuid");
+				Electrify.LOGGER.warn("UUID read from nbt: " + uuidString);
 				if(uuidString.isEmpty()) continue;
 
 				NetworkNode node = NetworkNode.fromCompoundTag(tag, level);

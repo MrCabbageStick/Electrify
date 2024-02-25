@@ -1,5 +1,9 @@
 package com.mrcabbagestick.electrify;
 
+import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorBlockEntity;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +30,10 @@ public class Electrify implements ModInitializer {
 		ElectrifyBlocks.register();
 
 		REGISTRATE.register();
+
+		ServerWorldEvents.LOAD.register((server, world) -> {
+//			world.getAllEntities().forEach();
+		});
 	}
 
 	public static ResourceLocation id(String path) {
