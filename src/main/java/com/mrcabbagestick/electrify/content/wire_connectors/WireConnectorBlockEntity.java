@@ -64,10 +64,10 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		CompoundTag networkTag = nbt.getCompound("Network");
 		BlockPos networkProviderPos = NbtTools.toBlockPos(nbt.getCompound("networkProvider"));
 
-		Electrify.LOGGER.info("Connector Here on client and server");
+//		Electrify.LOGGER.info("Connector Here on client and server");
 
 		if(level != null) {
-			Electrify.LOGGER.info("Hello from non null level");
+//			Electrify.LOGGER.info("Hello from non null level");
 			if (isNetworkController && !networkTag.isEmpty()) {
 				network = Network.fromCompoundTag(networkTag, level);
 			}
