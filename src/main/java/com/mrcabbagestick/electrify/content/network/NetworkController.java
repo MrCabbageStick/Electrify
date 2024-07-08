@@ -25,12 +25,26 @@ public class NetworkController {
 
 	public static Network createNetwork(){
 		var network = new Network();
-		var uuid = UUID.randomUUID();
 
-		networkData.addNetwork(uuid, network);
-
+		networkData.addNetwork(network.uuid, network);
 
 		return network;
+	}
+
+	public static Network createNetwork(NetworkNode networkNode){
+		var network = new Network(networkNode);
+
+		networkData.addNetwork(network.uuid, network);
+
+		return network;
+	}
+
+	public static Network removeNetwork(UUID uuid){
+		return networkData.getAllNetworks().remove(uuid);
+	}
+
+	public static void clear(){
+		networkData.clear();
 	}
 
 	public static Map<UUID, Network> getAllNetworks(){

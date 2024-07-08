@@ -4,17 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.nbt.TagType;
 import net.minecraft.nbt.TagTypes;
-
-import net.minecraft.server.commands.TagCommand;
 
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class NbtTools {
 
@@ -83,5 +79,12 @@ public class NbtTools {
 		ListTag nbt = new ListTag();
 		array.stream().map(NbtTools::from).forEach(nbt::add);
 		return nbt;
+	}
+
+	public static UUID getUUID(String key, CompoundTag compoundTag){
+		if(!compoundTag.contains(key, Tag.TAG_INT_ARRAY))
+			return null;
+
+		return compoundTag.getUUID(key);
 	}
 }

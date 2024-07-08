@@ -30,6 +30,20 @@ public class NetworkSavedData extends SavedData {
 		setDirty();
 	}
 
+	public Map<UUID, Network> getAllNetworks(){
+		return networks;
+	}
+
+	public void clear(){
+		networks.clear();
+		setDirty();
+	}
+
+	public Network removeNetwork(UUID uuid){
+		setDirty();
+		return networks.remove(uuid);
+	}
+
 	@Override
 	public CompoundTag save(CompoundTag compoundTag) {
 		/* Data to be saved */
@@ -81,10 +95,6 @@ public class NetworkSavedData extends SavedData {
 		}
 
 		return data;
-	}
-
-	public Map<UUID, Network> getAllNetworks(){
-		return networks;
 	}
 
 	public static NetworkSavedData fromServer(MinecraftServer server){

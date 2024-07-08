@@ -1,20 +1,18 @@
 package com.mrcabbagestick.electrify.entries;
 
-import com.mojang.brigadier.Command;
-
+import com.mrcabbagestick.electrify.content.network.Network;
 import com.mrcabbagestick.electrify.content.network.NetworkController;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import com.mrcabbagestick.electrify.content.network.NetworkNode;
+
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
 
-import java.awt.*;
-import java.util.function.Supplier;
-
 public class ElectrifyCommands {
+
+	static NetworkNode addedLast = null;
 
 	public static void register(){
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
@@ -25,7 +23,7 @@ public class ElectrifyCommands {
 				MutableComponent message = MutableComponent.create(Component.literal("All networks:\n").getContents());
 
 				NetworkController.getAllNetworks().forEach((uuid, network) -> {
-					message.append("> " + uuid.toString() + " -> Network\n");
+					message.append(String.format("> Network{uuid: %s, nodes: %d}\n", uuid, network.allNodes.size()));
 				});
 
 				context.getSource().sendSuccess(() -> message, false);
@@ -34,9 +32,34 @@ public class ElectrifyCommands {
 			}));
 
 			dispatcher.register(Commands.literal("add_network").executes(context -> {
-				NetworkController.createNetwork();
+				addedLast = NetworkNode.createWithNetwork();
+
 				context.getSource().sendSuccess(() -> Component.literal("Network added"), false);
 				return 1;
+			}));
+
+			dispatcher.register(Commands.literal("clear_networks").executes(context -> {
+				NetworkController.clear();
+
+				context.getSource().sendSuccess(() -> Component.literal("Networks cleared"), false);
+				addedLast = null;
+
+				return 1;
+			}));
+
+			dispatcher.register(Commands.literal("add_link").executes(context -> {
+
+				if(addedLast != null){
+					var node = NetworkNode.createWithNetwork();
+					node.linkTo(addedLast);
+
+					return 1;
+				}
+
+				context.getSource().sendSuccess(() ->
+						Component.literal("No network to add a node to"),
+						false);
+				return 0;
 			}));
 		});
 	}
