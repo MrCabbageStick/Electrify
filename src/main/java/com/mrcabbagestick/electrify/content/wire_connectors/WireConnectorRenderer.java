@@ -1,45 +1,28 @@
 package com.mrcabbagestick.electrify.content.wire_connectors;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
-import com.mrcabbagestick.electrify.Electrify;
-import com.mrcabbagestick.electrify.ElectrifyRenderTypes;
-
-import com.mrcabbagestick.electrify.content.wires.WireRenderFunctions;
-
-import com.mrcabbagestick.electrify.content.wires.WireType;
-
-import com.simibubi.create.AllBlockEntityTypes;
-import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.mixin.blockrenderlayer.RenderLayersMixin;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraft.world.phys.Vec3;
-
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mrcabbagestick.electrify.ElectrifyRenderTypes;
+import com.mrcabbagestick.electrify.content.wires.WireRenderFunctions;
+import com.mrcabbagestick.electrify.content.wires.WireType;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class WireConnectorRenderer<C extends WireConnectorBlockEntity> implements BlockEntityRenderer<C> {
-	public WireConnectorRenderer(BlockEntityRendererProvider.Context context) {}
+
+	public WireConnectorRenderer(BlockEntityRendererProvider.Context context) {
+	}
 
 	@Override
-	public void render(C blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+	public void render(@NotNull C blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 
 		poseStack.pushPose();
 
@@ -47,6 +30,9 @@ public class WireConnectorRenderer<C extends WireConnectorBlockEntity> implement
 
 		Matrix4f positionMatrix = poseStack.last().pose();
 		VertexConsumer _buffer = buffer.getBuffer(ElectrifyRenderTypes.WIRE);
+
+		if(Minecraft.getInstance().level == null)
+			return;
 
 		BlockState startingBlock = Minecraft.getInstance().level.getBlockState(blockEntity.getBlockPos());
 
@@ -72,7 +58,7 @@ public class WireConnectorRenderer<C extends WireConnectorBlockEntity> implement
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(C blockEntity) {
+	public boolean shouldRenderOffScreen(@NotNull C blockEntity) {
 
 		return true;
 	}
