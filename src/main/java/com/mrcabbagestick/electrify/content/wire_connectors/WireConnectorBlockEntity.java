@@ -6,6 +6,7 @@ import com.mrcabbagestick.electrify.tools.NbtTools;
 
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.client.Minecraft;

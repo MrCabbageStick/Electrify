@@ -1,8 +1,16 @@
 package com.mrcabbagestick.electrify;
 
+import com.mrcabbagestick.electrify.content.network.NetworkController;
 import com.mrcabbagestick.electrify.content.wire_connectors.WireConnectorBlockEntity;
 
+import com.mrcabbagestick.electrify.entries.ElectrifyCommands;
+import com.mrcabbagestick.electrify.state.PersistentStateTest;
+
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+
+import net.minecraft.world.level.levelgen.WorldDimensions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +37,14 @@ public class Electrify implements ModInitializer {
 		ElectrifyBlockEntities.register();
 		ElectrifyBlocks.register();
 
+		ElectrifyCommands.register();
+
 		REGISTRATE.register();
 
 		ServerWorldEvents.LOAD.register((server, world) -> {
-//			world.getAllEntities().forEach();
+			if(world.dimension().equals(server.overworld().dimension())){
+				NetworkController.loadNetworkData(server);
+			}
 		});
 	}
 

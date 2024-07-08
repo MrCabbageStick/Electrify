@@ -17,5 +17,13 @@ import java.util.stream.Collectors;
 
 public class Network {
 
+	public static Network fromCompoundTag(CompoundTag compoundTag){
+		return new Network();
+	}
 
+	public CompoundTag save(CompoundTag compoundTag){
+		compoundTag.putString("temp_string", "Network");
+
+		return compoundTag;
+	}
 }
