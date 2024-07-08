@@ -37,7 +37,7 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		super(type, pos, blockState);
 
 		networkNodeUuid = UUID.randomUUID();
-		createOwnNetwork();
+//		createOwnNetwork();
 	}
 
 	@Override
@@ -56,49 +56,49 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		connectedTo = NbtTools.toBlockPosSet(connectedToList);
 		renderTo = NbtTools.toFloatVectorSet(renderToList);
 
-		String networkNodeUuidString = nbt.getString("networkNodeUUID");
-		if(!networkNodeUuidString.isEmpty())
-			networkNodeUuid = UUID.fromString(networkNodeUuidString);
+//		String networkNodeUuidString = nbt.getString("networkNodeUUID");
+//		if(!networkNodeUuidString.isEmpty())
+//			networkNodeUuid = UUID.fromString(networkNodeUuidString);
 
-		isNetworkController = nbt.getBoolean("isNetworkController");
-		CompoundTag networkTag = nbt.getCompound("Network");
-		BlockPos networkProviderPos = NbtTools.toBlockPos(nbt.getCompound("networkProvider"));
+//		isNetworkController = nbt.getBoolean("isNetworkController");
+//		CompoundTag networkTag = nbt.getCompound("Network");
+//		BlockPos networkProviderPos = NbtTools.toBlockPos(nbt.getCompound("networkProvider"));
 
 //		Electrify.LOGGER.info("Connector Here on client and server");
 
-		if(level != null) {
-//			Electrify.LOGGER.info("Hello from non null level");
-			if (isNetworkController && !networkTag.isEmpty()) {
-				network = Network.fromCompoundTag(networkTag, level);
-			}
-
-			if (!isNetworkController) {
-				// networkNode: 03ca1663-0f86-477d-bca7-f7878d374d72
-
-				if(level.getBlockEntity(networkProviderPos) instanceof WireConnectorBlockEntity networkProviderEntity){
-					networkProvider = networkProviderEntity;
-					network = networkProvider.network;
-				}
-				else{
-					createOwnNetwork();
-				}
-			}
-
-			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
-		}
+//		if(level != null) {
+////			Electrify.LOGGER.info("Hello from non null level");
+////			if (isNetworkController && !networkTag.isEmpty()) {
+////				network = Network.fromCompoundTag(networkTag, level);
+////			}
+//
+//			if (!isNetworkController) {
+//				// networkNode: 03ca1663-0f86-477d-bca7-f7878d374d72
+//
+//				if(level.getBlockEntity(networkProviderPos) instanceof WireConnectorBlockEntity networkProviderEntity){
+//					networkProvider = networkProviderEntity;
+//					network = networkProvider.network;
+//				}
+//				else{
+//					createOwnNetwork();
+//				}
+//			}
+//
+//			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+//		}
 
 	}
 
-	protected void createOwnNetwork(){
-		network = new Network();
-		network.addNode(this);
-		isNetworkController = true;
-	}
+//	protected void createOwnNetwork(){
+//		network = new Network();
+//		network.addNode(this);
+//		isNetworkController = true;
+//	}
 
-	public void tryToCreateOwnNetwork(){
-		if(network == null)
-			createOwnNetwork();
-	}
+//	public void tryToCreateOwnNetwork(){
+//		if(network == null)
+//			createOwnNetwork();
+//	}
 
 	@Override
 	protected void write(CompoundTag nbt, boolean clientPacket) {
@@ -113,9 +113,9 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		nbt.putBoolean("isNetworkController", isNetworkController);
 		nbt.put("networkProvider", NbtTools.from(networkProvider.getBlockPos()));
 
-		if (isNetworkController && network != null) {
-			nbt.put("Network", network.asCompoundTag());
-		}
+//		if (isNetworkController && network != null) {
+//			nbt.put("Network", network.asCompoundTag());
+//		}
 	}
 
 	@Override
@@ -155,10 +155,10 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 
 		if(targetPos.distSqr(getBlockPos()) != 0 && !connectedFrom.contains(targetPos) && connectedTo.add(targetPos)){
 
-			this.network.mergeWith(target.network);
-			target.isNetworkController = false;
-			target.network = this.network;
-			target.networkProvider = this;
+//			this.network.mergeWith(target.network);
+//			target.isNetworkController = false;
+//			target.network = this.network;
+//			target.networkProvider = this;
 
 			updateRenderPositions();
 			setChanged();
