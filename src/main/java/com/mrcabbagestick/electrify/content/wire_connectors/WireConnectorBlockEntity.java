@@ -29,16 +29,9 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 	public Set<BlockPos> connectedFrom = new HashSet<>();
 	public Set<BlockPos> connectedTo = new HashSet<>();
 	public Set<Vector3f> renderTo = new HashSet<>();
-	public UUID networkNodeUuid;
-	public Network network;
-	public WireConnectorBlockEntity networkProvider = this;
-	private boolean isNetworkController;
 
 	public WireConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
-
-		networkNodeUuid = UUID.randomUUID();
-//		createOwnNetwork();
 	}
 
 	@Override
@@ -56,50 +49,7 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		connectedFrom = NbtTools.toBlockPosSet(connectedFromList);
 		connectedTo = NbtTools.toBlockPosSet(connectedToList);
 		renderTo = NbtTools.toFloatVectorSet(renderToList);
-
-//		String networkNodeUuidString = nbt.getString("networkNodeUUID");
-//		if(!networkNodeUuidString.isEmpty())
-//			networkNodeUuid = UUID.fromString(networkNodeUuidString);
-
-//		isNetworkController = nbt.getBoolean("isNetworkController");
-//		CompoundTag networkTag = nbt.getCompound("Network");
-//		BlockPos networkProviderPos = NbtTools.toBlockPos(nbt.getCompound("networkProvider"));
-
-//		Electrify.LOGGER.info("Connector Here on client and server");
-
-//		if(level != null) {
-////			Electrify.LOGGER.info("Hello from non null level");
-////			if (isNetworkController && !networkTag.isEmpty()) {
-////				network = Network.fromCompoundTag(networkTag, level);
-////			}
-//
-//			if (!isNetworkController) {
-//				// networkNode: 03ca1663-0f86-477d-bca7-f7878d374d72
-//
-//				if(level.getBlockEntity(networkProviderPos) instanceof WireConnectorBlockEntity networkProviderEntity){
-//					networkProvider = networkProviderEntity;
-//					network = networkProvider.network;
-//				}
-//				else{
-//					createOwnNetwork();
-//				}
-//			}
-//
-//			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
-//		}
-
 	}
-
-//	protected void createOwnNetwork(){
-//		network = new Network();
-//		network.addNode(this);
-//		isNetworkController = true;
-//	}
-
-//	public void tryToCreateOwnNetwork(){
-//		if(network == null)
-//			createOwnNetwork();
-//	}
 
 	@Override
 	protected void write(CompoundTag nbt, boolean clientPacket) {
@@ -108,15 +58,6 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		nbt.put("connectedTo", NbtTools.from(connectedTo));
 		nbt.put("connectedFrom", NbtTools.from(connectedFrom));
 		nbt.put("renderTo", NbtTools.fromVectorSet(renderTo));
-
-		nbt.putString("networkNodeUUID", networkNodeUuid.toString());
-
-		nbt.putBoolean("isNetworkController", isNetworkController);
-		nbt.put("networkProvider", NbtTools.from(networkProvider.getBlockPos()));
-
-//		if (isNetworkController && network != null) {
-//			nbt.put("Network", network.asCompoundTag());
-//		}
 	}
 
 	@Override
@@ -155,11 +96,6 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		BlockPos targetPos = target.getBlockPos();
 
 		if(targetPos.distSqr(getBlockPos()) != 0 && !connectedFrom.contains(targetPos) && connectedTo.add(targetPos)){
-
-//			this.network.mergeWith(target.network);
-//			target.isNetworkController = false;
-//			target.network = this.network;
-//			target.networkProvider = this;
 
 			updateRenderPositions();
 			setChanged();

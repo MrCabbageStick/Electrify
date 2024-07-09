@@ -12,7 +12,6 @@ import org.joml.Vector3f;
 
 public abstract class WireConnectorBaseBlock<C extends WireConnectorBlockEntity> extends Block implements IBE<C> {
 
-
 	public WireConnectorBaseBlock(Properties properties) {
 		super(properties);
 	}
