@@ -3,6 +3,7 @@ package com.mrcabbagestick.electrify.content.wire_connectors;
 import com.mrcabbagestick.electrify.Electrify;
 import com.mrcabbagestick.electrify.content.network.Network;
 import com.mrcabbagestick.electrify.content.network.NetworkController;
+import com.mrcabbagestick.electrify.content.network.NetworkEntityController;
 import com.mrcabbagestick.electrify.content.network.NetworkNode;
 import com.mrcabbagestick.electrify.tools.NbtTools;
 
@@ -11,6 +12,8 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -32,12 +35,13 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 	public Set<BlockPos> connectedTo = new HashSet<>();
 	public Set<Vector3f> renderTo = new HashSet<>();
 
-	public NetworkNode networkNode;
+	public NetworkNode networkNode = null;
 
 	public WireConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
 
 		networkNode = NetworkNode.createWithNetwork();
+		// It synchronizes client with server somewhere here
 	}
 
 	@Override
@@ -152,4 +156,15 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		}
 	}
 
+	@Override
+	public void tick() {
+		super.tick();
+
+		if(!hasLevel())
+			return;
+
+		// The same on client and server for some reason
+		// I mean it's good, but when does it happen?
+		Electrify.LOGGER.info(networkNode.getNetwork().getUuid().toString());
+	}
 }
