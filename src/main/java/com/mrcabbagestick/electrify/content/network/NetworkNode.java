@@ -116,4 +116,7 @@ public class NetworkNode {
 		return unsafeLinkTo(node);
 	}
 
+	public Network getNetwork() {
+		return network;
+	}
 }

@@ -81,4 +81,8 @@ public class Network {
 	public NetworkNode getNode(UUID uuid){
 		return allNodes.get(uuid);
 	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
 }

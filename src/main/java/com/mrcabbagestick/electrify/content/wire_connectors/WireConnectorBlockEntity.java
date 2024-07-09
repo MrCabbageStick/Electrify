@@ -2,6 +2,8 @@ package com.mrcabbagestick.electrify.content.wire_connectors;
 
 import com.mrcabbagestick.electrify.Electrify;
 import com.mrcabbagestick.electrify.content.network.Network;
+import com.mrcabbagestick.electrify.content.network.NetworkController;
+import com.mrcabbagestick.electrify.content.network.NetworkNode;
 import com.mrcabbagestick.electrify.tools.NbtTools;
 
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -30,13 +32,16 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 	public Set<BlockPos> connectedTo = new HashSet<>();
 	public Set<Vector3f> renderTo = new HashSet<>();
 
+	public NetworkNode networkNode;
+
 	public WireConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
+
+		networkNode = NetworkNode.createWithNetwork();
 	}
 
 	@Override
-	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-	}
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
 	@Override
 	protected void read(CompoundTag nbt, boolean clientPacket) {
@@ -49,6 +54,27 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		connectedFrom = NbtTools.toBlockPosSet(connectedFromList);
 		connectedTo = NbtTools.toBlockPosSet(connectedToList);
 		renderTo = NbtTools.toFloatVectorSet(renderToList);
+
+		UUID networkNodeUuid;
+		UUID networkUuid;
+
+		if(
+			(networkNodeUuid = NbtTools.getUUID("networkNodeUUID", nbt)) == null
+			|| (networkUuid = NbtTools.getUUID("networkUUID", nbt)) == null
+		){
+			Electrify.LOGGER.warn("WireConnectorBlockEntity loaded without network part");
+			return;
+		}
+
+		var network = NetworkController.getNetwork(networkUuid);
+		if(network == null) {
+			Electrify.LOGGER.error("WireConnectorBlockEntity could not find it's network");
+			return;
+		}
+
+		networkNode = network.getNode(networkNodeUuid);
+		if(networkNode == null)
+			Electrify.LOGGER.error("WireConnectorBlockEntity could not find it's node");
 	}
 
 	@Override
@@ -58,6 +84,9 @@ public class WireConnectorBlockEntity extends SmartBlockEntity {
 		nbt.put("connectedTo", NbtTools.from(connectedTo));
 		nbt.put("connectedFrom", NbtTools.from(connectedFrom));
 		nbt.put("renderTo", NbtTools.fromVectorSet(renderTo));
+
+		nbt.putUUID("networkNodeUUID", networkNode.uuid);
+		nbt.putUUID("networkUUID", networkNode.getNetwork().getUuid());
 	}
 
 	@Override
