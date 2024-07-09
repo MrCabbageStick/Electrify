@@ -55,8 +55,10 @@ public class NetworkLink {
 		}
 
 		// End network node
-		if(compoundTag.contains("connectedTo", IntArrayTag.TAG_INT_ARRAY))
-			link.uuid = compoundTag.getUUID("connectedTo");
+		if(compoundTag.contains("connectedTo", IntArrayTag.TAG_INT_ARRAY)) {
+			UUID endNodeUuid = compoundTag.getUUID("connectedTo");
+			link.to = network.getNode(endNodeUuid);
+		}
 		else {
 			Electrify.LOGGER.error("CompoundTag for NetworkLink lacks end Node");
 			return null;

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class NetworkNode {
@@ -25,6 +26,8 @@ public class NetworkNode {
 	public UUID uuid;
 	public Network network;
 	public Map<UUID, NetworkLink> links = new HashMap<>();
+
+	public List<CompoundTag> uninitializedLinks = new ArrayList<>();
 
 	public List<NetworkNode> cachedConnections = new ArrayList<>();
 	public boolean cacheValid = false;
@@ -70,25 +73,21 @@ public class NetworkNode {
 		ListTag linksTag = compoundTag.getList("links", IntArrayTag.TAG_COMPOUND);
 
 		for (int i = 0; i < linksTag.size(); i++) {
-			var link = NetworkLink.fromCompoundTag(linksTag.getCompound(i), network);
-
-			if(link != null)
-				node.links.put(link.uuid, link);
+			node.uninitializedLinks.add(linksTag.getCompound(i));
 		}
 
 		return node;
 	}
 
-	public boolean unsafeLinkTo(NetworkNode node){
-		return true;
+	public void initializeLinks(){
+
+		uninitializedLinks.stream()
+				.map(compoundTag -> NetworkLink.fromCompoundTag(compoundTag, network))
+				.filter(Objects::nonNull)
+				.forEach(networkLink -> links.put(networkLink.uuid, networkLink));
 	}
 
-	public boolean linkTo(NetworkNode node){
-
-		if(!network.hasNode(node)){
-			network.addNode(node, this);
-		}
-
+	public boolean unsafeLinkTo(NetworkNode node){
 		if(!cacheValid){
 			cachedConnections = new ArrayList<>(links.values().stream().map(networkLink -> networkLink.to).toList());
 			cacheValid = true;
@@ -106,6 +105,15 @@ public class NetworkNode {
 		node.network = network;
 
 		return true;
+	}
+
+	public boolean linkTo(NetworkNode node){
+
+		if(!network.hasNode(node)){
+			network.addNode(node, this);
+		}
+
+		return unsafeLinkTo(node);
 	}
 
 }

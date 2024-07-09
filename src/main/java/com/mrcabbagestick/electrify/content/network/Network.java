@@ -57,6 +57,8 @@ public class Network {
 				network.allNodes.put(node.uuid, node);
 		}
 
+		// Links
+		network.allNodes.values().forEach(NetworkNode::initializeLinks);
 
 		return network;
 	}
@@ -68,11 +70,15 @@ public class Network {
 	public boolean addNode(NetworkNode node, NetworkNode existingNode){
 		allNodes.put(node.uuid, node);
 
-		if(!existingNode.linkTo(node)){
+		if(!existingNode.unsafeLinkTo(node)){
 			allNodes.remove(node.uuid);
 			return false;
 		}
 
 		return true;
+	}
+
+	public NetworkNode getNode(UUID uuid){
+		return allNodes.get(uuid);
 	}
 }
