@@ -50,7 +50,7 @@ public class Network {
 		if(!allNodes.containsKey(nodeUuid))
 			return;
 
-		var startNode = allNodes.get(uuid);
+		var startNode = allNodes.get(nodeUuid);
 
 		Stack<NetworkNode> branchingNodes = new Stack<>();
 		Set<UUID> checkedNodes = new HashSet<>();
@@ -61,7 +61,7 @@ public class Network {
 	private void walkFrom(NetworkNode startNode, Stack<NetworkNode> branchingNodes, Set<UUID> checkedNodes, int indent){
 		var nodeLinks = startNode.getLinks();
 
-		Electrify.LOGGER.info("    ".repeat(indent) + startNode.uuid);
+		Electrify.LOGGER.info("|".repeat(indent) + "- " + startNode.uuid);
 
 		// Node was checked (for branching purposes)
 		if(checkedNodes.contains(startNode.uuid)){
@@ -74,7 +74,6 @@ public class Network {
 		if(nodeLinks.isEmpty()){
 			return;
 		}
-
 
 		List<NetworkLink> linkList = nodeLinks.values().stream().toList();
 

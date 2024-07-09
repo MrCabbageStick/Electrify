@@ -1,5 +1,6 @@
 package com.mrcabbagestick.electrify.entries;
 
+import com.mrcabbagestick.electrify.Electrify;
 import com.mrcabbagestick.electrify.content.network.Network;
 import com.mrcabbagestick.electrify.content.network.NetworkController;
 
@@ -65,9 +66,19 @@ public class ElectrifyCommands {
 			dispatcher.register(Commands.literal("walk_network").executes(context -> {
 
 				var network = addedLast.network;
+				var networkNodesUuid = network.allNodes.keySet().stream().toList();
+
+				Electrify.LOGGER.info(networkNodesUuid.toString());
+
+				try{
+					network.walkFrom(networkNodesUuid.get(0));
+				}
+				catch (Exception e){
+					Electrify.LOGGER.error(e.getMessage());
+				}
 
 				context.getSource().sendSuccess(() ->
-								Component.literal("No network to add a node to"),
+								Component.literal("These boots are made for walking"),
 						false);
 				return 0;
 			}));
