@@ -51,7 +51,7 @@ public class ElectrifyCommands {
 
 				if(addedLast != null){
 					var node = NetworkNode.createWithNetwork();
-					node.linkTo(addedLast);
+					addedLast.linkTo(node);
 
 					return 1;
 				}
@@ -61,6 +61,17 @@ public class ElectrifyCommands {
 						false);
 				return 0;
 			}));
+
+			dispatcher.register(Commands.literal("walk_network").executes(context -> {
+
+				var network = addedLast.network;
+
+				context.getSource().sendSuccess(() ->
+								Component.literal("No network to add a node to"),
+						false);
+				return 0;
+			}));
+
 		});
 	}
 }

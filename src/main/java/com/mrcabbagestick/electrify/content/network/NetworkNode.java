@@ -101,22 +101,29 @@ public class NetworkNode {
 		links.put(link.uuid, link);
 		cachedConnections.add(node);
 
-		NetworkController.removeNetwork(node.network.uuid);
-		node.network = network;
+		network.mergeWith(node.network);
 
 		return true;
 	}
 
 	public boolean linkTo(NetworkNode node){
 
-		if(!network.hasNode(node)){
-			network.addNode(node, this);
-		}
+//		if(!network.hasNode(node)){
+//			network.addNode(node, this);
+//		}
 
 		return unsafeLinkTo(node);
 	}
 
 	public Network getNetwork() {
 		return network;
+	}
+
+	public void setNetwork(Network network) {
+		this.network = network;
+	}
+
+	public Map<UUID, NetworkLink> getLinks() {
+		return links;
 	}
 }
