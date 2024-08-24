@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x,rotated=true": {"model": "electrify:block/concrete_pylon/cobblestone_pylon", "x": 90, "y": 90, "z": 90},
+    "axis=x,rotated=false": {"model": "electrify:block/concrete_pylon/cobblestone_pylon", "x": 90, "y": 90},
+    "axis=z,rotated=true": {"model": "electrify:block/concrete_pylon/cobblestone_pylon", "x": 90},
+    "axis=z,rotated=false": {"model": "electrify:block/concrete_pylon/cobblestone_pylon", "x": 90, "z":  90},
+    "axis=y,rotated=true": {"model": "electrify:block/concrete_pylon/cobblestone_pylon", "y":  90},
+    "axis=y,rotated=false": {"model": "electrify:block/concrete_pylon/cobblestone_pylon"}
+  }
+}

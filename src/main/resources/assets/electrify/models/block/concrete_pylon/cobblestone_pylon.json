@@ -1,0 +1,6 @@
+{
+  "parent": "electrify:block/concrete_pylon/concrete_pylon_template",
+  "textures": {
+    "main": "minecraft:block/cobblestone"
+  }
+}

@@ -3,6 +3,8 @@ package com.mrcabbagestick.electrify.content.network;
 import com.mojang.datafixers.util.Function3;
 import com.mrcabbagestick.electrify.Electrify;
 
+import com.mrcabbagestick.electrify.tools.NbtTools;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 
@@ -37,6 +39,11 @@ public class NetworkLink {
 		else
 			Electrify.LOGGER.error("Network link lacks the end Node");
 
+		if(from != null)
+			compoundTag.putUUID("connectedFrom", from.uuid);
+		else
+			Electrify.LOGGER.error("Network link lacks the start Node") ;
+
 		return compoundTag;
 	}
 
@@ -61,6 +68,13 @@ public class NetworkLink {
 		}
 		else {
 			Electrify.LOGGER.error("CompoundTag for NetworkLink lacks end Node");
+			return null;
+		}
+
+		// Start network node
+		UUID startNodeUuid;
+		if((link.from = network.getNode(NbtTools.getUUID("connectedFrom", compoundTag))) == null){
+			Electrify.LOGGER.error("CompoundTag for NetworkLink lacks start Node");
 			return null;
 		}
 
